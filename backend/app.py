@@ -66,8 +66,9 @@ def predict():
     img_array = np.expand_dims(img_resized / 255.0, axis=0) # Normalize
     
     # Predict
-    if model:
-        preds = model.predict(img_array)
+    loaded_model = get_model()
+    if loaded_model:
+        preds = loaded_model.predict(img_array)
         class_idx = np.argmax(preds[0])
         confidence = float(preds[0][class_idx])
         
@@ -88,7 +89,7 @@ def predict():
         # Grad-CAM
         try:
             # We explicitly named the layer 'target_conv_layer' in train.py (Functional API)
-            heatmap = make_gradcam_heatmap(img_array, model, 'target_conv_layer')
+            heatmap = make_gradcam_heatmap(img_array, loaded_model, 'target_conv_layer')
             heatmap_filename = f"heatmap_{filename}"
             heatmap_path = os.path.join(RESULT_FOLDER, heatmap_filename)
             save_and_display_gradcam(filepath, heatmap, heatmap_path)
