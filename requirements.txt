@@ -1,0 +1,10 @@
+flask
+flask-cors
+tensorflow
+numpy
+opencv-python-headless
+waitress
+gunicorn
+werkzeug
+h5py
+pillow
