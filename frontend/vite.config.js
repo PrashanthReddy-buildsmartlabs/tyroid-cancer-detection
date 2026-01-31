@@ -9,6 +9,13 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    allowedHosts: ['modesto-nongenerating-painedly.ngrok-free.dev']
+    allowedHosts: ['modesto-nongenerating-painedly.ngrok-free.dev'],
+    proxy: {
+      '/predict': 'http://localhost:5000',
+      '/generate_report': 'http://localhost:5000',
+      '/uploads': 'http://localhost:5000',
+      '/results': 'http://localhost:5000',
+      '/health': 'http://localhost:5000'
+    }
   }
 })

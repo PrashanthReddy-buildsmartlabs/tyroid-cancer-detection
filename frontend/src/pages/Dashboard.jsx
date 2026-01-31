@@ -218,7 +218,7 @@ function Dashboard() {
         formData.append('file', file)
 
         try {
-            const response = await fetch('http://localhost:5000/predict', {
+            const response = await fetch('/predict', {
                 method: 'POST',
                 body: formData
             })
@@ -346,7 +346,7 @@ function Dashboard() {
     const downloadReport = async (predictionData = result) => {
         if (!predictionData) return
         try {
-            const response = await fetch('http://localhost:5000/generate_report', {
+            const response = await fetch('/generate_report', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -579,7 +579,7 @@ function Dashboard() {
                                                 </button>
                                             </div>
                                             <img
-                                                src={`http://localhost:5000${heatmapActive ? result.heatmap_url : result.original_url}?t=${Date.now()}`}
+                                                src={`${heatmapActive ? result.heatmap_url : result.original_url}?t=${Date.now()}`}
                                                 className="w-full h-full object-contain bg-black"
                                                 alt="Analysis Result"
                                             />
@@ -910,7 +910,7 @@ function Dashboard() {
                                                     {/* Step 4+: Real Gradient Heatmap */}
                                                     {(processStep >= 4 && processResult?.heatmap_url) && (
                                                         <div className="absolute inset-0 z-10 transition-opacity duration-1000 group-hover:opacity-0">
-                                                            <img src={`http://localhost:5000${processResult.heatmap_url}`} className="w-full h-full object-cover" alt="Grad-CAM Heatmap" />
+                                                            <img src={processResult.heatmap_url} className="w-full h-full object-cover" alt="Grad-CAM Heatmap" />
                                                             <div className="absolute top-4 right-4 text-white font-bold text-xs bg-red-600/90 px-3 py-1 rounded-full shadow-lg backdrop-blur-sm animate-fade-in">Malignancy Hotspot</div>
                                                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs font-mono">Hover to see original</div>
                                                         </div>
