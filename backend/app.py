@@ -28,24 +28,25 @@ os.makedirs(RESULT_FOLDER, exist_ok=True)
 # Global Model
 model = None
 
-def load_model():
+def get_model():
     global model
-    try:
-        model = build_simple_cnn((224, 224, 3), 5) # Multi-class (5 types)
-        
-        # Path to weights
-        weights_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models', 'thyroid_model.h5')
-        
-        if os.path.exists(weights_path):
-            model.load_weights(weights_path)
-            print(f"Model weights loaded from {weights_path}")
-        else:
-            print(f"Weights not found at {weights_path}, using untrained model.")
+    if model is None:
+        print("Loading model lazily...")
+        try:
+            model = build_simple_cnn((224, 224, 3), 5) # Multi-class (5 types)
+            weights_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models', 'thyroid_model.h5')
             
-    except Exception as e:
-        print(f"Error loading model: {e}")
+            if os.path.exists(weights_path):
+                model.load_weights(weights_path)
+                print(f"Model weights loaded from {weights_path}")
+            else:
+                print(f"Weights not found at {weights_path}, using untrained model.")
+        except Exception as e:
+            print(f"Error loading model: {e}")
+            model = None
+    return model
 
-load_model()
+# Removed immediate load_model() call for Cloud Stability
 
 @app.route('/predict', methods=['POST'])
 def predict():
